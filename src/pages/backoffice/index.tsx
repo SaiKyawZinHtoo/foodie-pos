@@ -1,5 +1,10 @@
+import BackofficeLayout from "../../components/backofficeLayout";
 const BackOfficeApp = () => {
-  return <h1>Back Office App </h1>;
+  return (
+    <BackofficeLayout>
+      <h1> Home </h1>
+    </BackofficeLayout>
+  );
 };
 
 export default BackOfficeApp;
