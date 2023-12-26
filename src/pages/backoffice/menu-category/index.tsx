@@ -1,25 +1,16 @@
-import ImageCard from "@/components/ImageCard/ImageCard";
 import BackofficeLayout from "@/components/backofficeLayout";
-import config from "@/config";
+
+import ItemCard from "@/components/Item/itemCard";
+import CreateMenuCategory from "@/components/menuCategory/CreateMenuCategory";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { MenuCategory } from "@/types/menuCategory";
+import CategoryIcon from "@mui/icons-material/Category";
 import { Box, Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useAppSelector } from "@/store/hooks";
-import CreateMenu from "../../../components/createMenu/CreateMenu";
+import { useState } from "react";
 
-const MenuPage = () => {
-  const menus = useAppSelector((store) => store.menu.item )
-  //const dispatch = useAppDispatch();
+const MenuCategoryPage = () => {
+  const menuCategories = useAppSelector((store) => store.menuCategory.item)
   const [open, setOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    //fetchMenus()
-  }, []);
-
-  const fetchMenus = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/Menu`);
-    const menus = await response.json();
-  };
-
   return (
     <BackofficeLayout>
       <Box>
@@ -62,13 +53,23 @@ const MenuPage = () => {
       </Box> */}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Button variant="contained" onClick={() => setOpen(true)}>
-            Create Menu
+            Create Menu Category
           </Button>
         </Box>
-        <CreateMenu open={open} setOpen={setOpen} />
+        <CreateMenuCategory
+          open={open}
+          setOpen={setOpen}
+          
+        />
         <Box sx={{ display: "flex", flexWrap: "wrap", mt: 3.5 }}>
-          {menus.map((menu) => (
-            <ImageCard key={menu.id} menu={menu} />
+          {menuCategories.map((menuCategory) => (
+            <ItemCard
+              href={`/backoffice/menu-category/${menuCategory.id}`}
+              icon={<CategoryIcon />}
+              key={menuCategory.id}
+              title={menuCategory.name}
+              
+            />
           ))}
         </Box>
       </Box>
@@ -76,4 +77,4 @@ const MenuPage = () => {
   );
 };
 
-export default MenuPage;
+export default MenuCategoryPage;

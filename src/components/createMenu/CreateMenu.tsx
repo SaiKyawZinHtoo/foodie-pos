@@ -1,4 +1,6 @@
 import config from "@/config";
+import { useAppDispatch } from "@/store/hooks";
+import { setMenus } from "@/store/slices/menuSlice";
 import { CreateMenuPayload, Menu } from "@/types/menu";
 import {
   Box,
@@ -14,26 +16,29 @@ import { useState } from "react";
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
-  setMenus: (menus: Menu[]) => void;
+  
 }
 
-const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
-  const [menu, setMenu] = useState<CreateMenuPayload>({
-    name: "",
-    price: 0,
-    assetUrl: "",
-  });
+const defaultMenu = {
+  name: "",
+  price: 0,
+  assetUrl: "",
+}
+const CreateMenu = ({ open, setOpen}: Props) => {
+  const [newMenu, setNewMenu] = useState<CreateMenuPayload>(defaultMenu);
+  const dispatch = useAppDispatch()
   const CrateMenu = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/Menu`, {
+    const response = await fetch(`${config.apiBaseUrl}/menu`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(menu),
+      body: JSON.stringify(newMenu),
     });
     const menus = await response.json();
     console.log("Data From Server: ", menus);
-    setMenus(menus)
+    dispatch(setMenus(menus))
+    setNewMenu(defaultMenu)
     setOpen(false);
   };
 
@@ -75,13 +80,13 @@ const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
           <TextField
             sx={{ width: 350, mb: 3 }}
             placeholder="Name"
-            onChange={(evt) => setMenu({ ...menu, name: evt.target.value })}
+            onChange={(evt) => setNewMenu({ ...newMenu, name: evt.target.value })}
           />
           <TextField
             sx={{ width: 350, mb: 3 }}
             placeholder="Price"
             onChange={(evt) =>
-              setMenu({ ...menu, price: Number(evt.target.value) })
+              setNewMenu({ ...newMenu, price: Number(evt.target.value) })
             }
           />
           <Button
@@ -89,7 +94,7 @@ const CreateMenu = ({ open, setOpen, setMenus }: Props) => {
             sx={{ width: "fit-content" }}
             onClick={CrateMenu}
           >
-            Create Menu
+            Create 
           </Button>
           {/* <Button
             variant="contained"

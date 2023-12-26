@@ -11,7 +11,7 @@ interface Props {
 const ImageCard = ({ menu }: Props) => {
   return (
     <Link
-      href={String(menu.id)}
+      href={`menu/${String(menu.id)}`}
       style={{
         textDecoration: "none",
         marginRight: "15px",
