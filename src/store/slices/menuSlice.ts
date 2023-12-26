@@ -11,12 +11,12 @@ export const menuSlice = createSlice({
   name: "menu",
   initialState,
   reducers: {
-    setMenus: (state,actions) => {
-      state.item = actions.payload
-    }
+    setMenus: (state, actions) => {
+      state.item = actions.payload;
+    },
   },
 });
 
-export const {setMenus} = menuSlice.actions
+export const { setMenus } = menuSlice.actions;
 
 export default menuSlice.reducer;
