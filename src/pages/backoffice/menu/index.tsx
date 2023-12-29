@@ -15,11 +15,6 @@ const MenuPage = () => {
     //fetchMenus()
   }, []);
 
-  const fetchMenus = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/Menu`);
-    const menus = await response.json();
-  };
-
   return (
     <BackofficeLayout>
       <Box>

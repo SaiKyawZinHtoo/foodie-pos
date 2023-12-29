@@ -1,6 +1,6 @@
 import config from "@/config";
 import { useAppDispatch } from "@/store/hooks";
-import { setMenuCategories } from "@/store/slices/menuCategorySlices";
+import { createMenuCategory, setMenuCategories } from "@/store/slices/menuCategorySlices";
 import { CreateMenuCategoryPayload } from "@/types/menuCategory";
 import {
   Box,
@@ -27,17 +27,10 @@ const CreateMenuCategory = ({ open, setOpen }: Props) => {
   const dispatch = useAppDispatch();
   const [newMenuCategory, setNewMenuCategory] =
     useState<CreateMenuCategoryPayload>(defaultNewMenuCategory);
-  const crateMenuCategory = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/menu-category`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newMenuCategory),
-    });
-    const menuCategories = await response.json();
+  const handleCrateMenuCategory = async () => {
+    
 
-    dispatch(setMenuCategories(menuCategories));
+    dispatch(createMenuCategory(newMenuCategory));
     setNewMenuCategory(defaultNewMenuCategory);
     setOpen(false);
   };
@@ -117,7 +110,7 @@ const CreateMenuCategory = ({ open, setOpen }: Props) => {
             <Button
               variant="contained"
               sx={{ width: "fit-content" }}
-              onClick={crateMenuCategory}
+              onClick={handleCrateMenuCategory}
             >
               Create
             </Button>

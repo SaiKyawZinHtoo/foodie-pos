@@ -1,7 +1,6 @@
-import config from "@/config";
 import { useAppDispatch } from "@/store/hooks";
-import { setMenus } from "@/store/slices/menuSlice";
-import { CreateMenuPayload, Menu } from "@/types/menu";
+import { createMenu } from "@/store/slices/menuSlice";
+import { CreateMenuPayload } from "@/types/menu";
 import {
   Box,
   Button,
@@ -12,33 +11,26 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-
 interface Props {
   open: boolean;
   setOpen: (value: boolean) => void;
-  
 }
 
 const defaultMenu = {
   name: "",
   price: 0,
   assetUrl: "",
-}
-const CreateMenu = ({ open, setOpen}: Props) => {
+};
+
+const CreateMenu = ({ open, setOpen }: Props) => {
   const [newMenu, setNewMenu] = useState<CreateMenuPayload>(defaultMenu);
-  const dispatch = useAppDispatch()
-  const CrateMenu = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/menu`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newMenu),
-    });
-    const menus = await response.json();
-    console.log("Data From Server: ", menus);
-    dispatch(setMenus(menus))
-    setNewMenu(defaultMenu)
+  const dispatch = useAppDispatch();
+
+  //Create menu function
+  const handleCreateMenu = async () => {
+    dispatch(createMenu(newMenu));
+    setNewMenu(defaultMenu);
+    //close dialog box
     setOpen(false);
   };
 
@@ -80,7 +72,9 @@ const CreateMenu = ({ open, setOpen}: Props) => {
           <TextField
             sx={{ width: 350, mb: 3 }}
             placeholder="Name"
-            onChange={(evt) => setNewMenu({ ...newMenu, name: evt.target.value })}
+            onChange={(evt) =>
+              setNewMenu({ ...newMenu, name: evt.target.value })
+            }
           />
           <TextField
             sx={{ width: 350, mb: 3 }}
@@ -92,9 +86,9 @@ const CreateMenu = ({ open, setOpen}: Props) => {
           <Button
             variant="contained"
             sx={{ width: "fit-content" }}
-            onClick={CrateMenu}
+            onClick={handleCreateMenu}
           >
-            Create 
+            Create
           </Button>
           {/* <Button
             variant="contained"
