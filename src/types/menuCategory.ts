@@ -10,6 +10,11 @@ export interface CreateMenuCategoryPayload {
   isAvailable: boolean;
 }
 
+export interface UpdateMenuCategory {
+  id: number;
+  name: string;
+}
+
 export interface MenuCategoryState {
   item: MenuCategory[];
   isLoading: boolean;

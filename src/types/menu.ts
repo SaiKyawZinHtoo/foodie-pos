@@ -10,6 +10,11 @@ export interface Menu extends CreateMenuPayload {
   isArchived: boolean;
 }
 
+export interface UpdateMenuPayload {
+  id: number;
+  name: string;
+}
+
 export interface MenuState {
   item: Menu[];
   isLoading: boolean;
