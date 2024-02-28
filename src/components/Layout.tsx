@@ -5,28 +5,29 @@ import SlideBar from "./SlideBar";
 import { useSession } from "next-auth/react";
 import { apiBaseUrl } from "next-auth/client/_utils";
 import { config } from "@/utils/config";
+import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchAppData } from "@/store/slice/appSlice";
 
 interface Props {
   children: ReactNode;
 }
 
 const Layout = ({ children }: Props) => {
-  const { data } = useSession();
+  const { data: session } = useSession();
+  const dispatch = useAppDispatch();
+  const {init} = useAppSelector(state => state.app)
 
   useEffect(() => {
-    fetchData();
-  }, [data]);
+    if(session && !init)
+    dispatch(fetchAppData({}));
+  }, [session]);
 
-  const fetchData = async () => {
-    const response = await fetch(`${config.apiBaseUrl}/app`);
-    const dataFromServer = await response.json();
-    console.log(dataFromServer);
-  };
   return (
     <Box>
       <Topbar />
       <Box sx={{ display: "flex", position: "relative" }}>
-        {data && <SlideBar />}
+        {session && <SlideBar />}
         <Box sx={{ width: "100%", height: "100%" }}>{children}</Box>
       </Box>
     </Box>

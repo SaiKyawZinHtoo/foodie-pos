@@ -1,9 +1,11 @@
 import NewTable from "@/components/NewTable";
-import { Box, Button } from "@mui/material";
+import { useAppSelector } from "@/store/hooks";
+import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 const TablePages = () => {
   const [open, setOpen] = useState(false);
+  const tables = useAppSelector((state) => state.table.item);
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3, mr: 3 }}>
@@ -11,7 +13,11 @@ const TablePages = () => {
           New Table
         </Button>
       </Box>
-      <h1>Table Pages</h1>
+      <Box>
+        {tables.map((item) => (
+          <Typography key={item.id}>{item.name}</Typography>
+        ))}
+      </Box>
       <NewTable open={open} setOpen={setOpen} />
     </Box>
   );

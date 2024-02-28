@@ -1,5 +1,7 @@
+import { Menu } from "@prisma/client";
+
 export interface MenuSlice {
-  items: [];
+  items: Menu[];
   isLoading: boolean;
   error: Error | null;
 }
@@ -11,4 +13,10 @@ export interface BaseOptions {
 
 export interface GetMenuOptions extends BaseOptions {
   locationId: string;
+}
+
+export interface CreateMenuOptions extends BaseOptions {
+  name: string;
+  price: number;
+  menuCategoryIds: number[];
 }

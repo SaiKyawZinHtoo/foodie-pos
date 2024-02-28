@@ -2,6 +2,12 @@ import { GetMenuOptions, MenuSlice } from "@/types/menu";
 import { config } from "@/utils/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+const initialState: MenuSlice = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
+
 export const getMenu = createAsyncThunk(
   "menu/getMenu",
   async (options: GetMenuOptions, ThunkApi) => {
@@ -18,12 +24,6 @@ export const getMenu = createAsyncThunk(
     }
   }
 );
-
-const initialState: MenuSlice = {
-  items: [],
-  isLoading: false,
-  error: null,
-};
 
 const menuSlice = createSlice({
   name: "menu",
