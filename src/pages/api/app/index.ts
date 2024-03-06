@@ -93,18 +93,19 @@ export default async function handler(
         where: { companyId },
       });
       const lodcationIds = locations.map((item) => item.id);
-      //နည်းနည်းမရှင်း
       const menuCategories = await prisma.menuCategory.findMany({
         where: { companyId },
       });
       const menuCategoryIds = menuCategories.map((item) => item.id);
-      const menuCategoryMenu = await prisma.menuCategoryMenu.findMany({
+      const menuCategoryMenus = await prisma.menuCategoryMenu.findMany({
         where: { menuCategoryId: { in: menuCategoryIds } },
       });
-      const menuIds = menuCategoryMenu.map((item) => item.menuId);
+
+      const menuIds = menuCategoryMenus.map((item) => item.menuId);
       const menus = await prisma.menu.findMany({
-        where: { id: { in: menuIds } },
+        where: { id: { in: menuIds }, isArchived: false },
       });
+
       const menuAddonCategory = await prisma.menuAddonCategory.findMany({
         where: { menuId: { in: menuIds } },
       });
@@ -124,12 +125,12 @@ export default async function handler(
         locations,
         table,
         menuCategories,
+        menuCategoryMenus,
         menus,
         addonCategories,
         addon,
       });
     }
   }
-
   res.status(405).send("Method Not Allowed..");
 }

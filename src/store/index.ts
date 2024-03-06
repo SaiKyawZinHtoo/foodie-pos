@@ -6,13 +6,15 @@ import tableReducer from "./slice/tableSlice";
 import menuCategoriesReducer from "./slice/menuCategorySlice";
 import addonCategoriesReducer from "./slice/addonCategorySlice";
 import addonReducer from "./slice/addonSlice";
+import menuCategoryMenuReducer from "./slice/menuCategoryMenuSlice";
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
-    menu: menuReducer,
     location: locationReducer,
     table: tableReducer,
+    menu: menuReducer,
+    menuCategoryMenu: menuCategoryMenuReducer,
     menuCategory: menuCategoriesReducer,
     addonCategory: addonCategoriesReducer,
     addon: addonReducer,

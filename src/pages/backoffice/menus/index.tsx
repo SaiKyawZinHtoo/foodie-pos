@@ -10,12 +10,19 @@ const Menus = () => {
   const menus = useAppSelector((state) => state.menu.items);
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3, mr: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          mt: 5,
+          mr: 5,
+        }}
+      >
         <Button variant="contained" onClick={() => setOpen(true)}>
           New Menu
         </Button>
       </Box>
-      <Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
         {menus.map((item) => (
           <ItemCard
             key={item.id}
