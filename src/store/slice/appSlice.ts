@@ -10,6 +10,7 @@ import { setMenus } from "./menuSlice";
 import { setAddonCategory } from "./addonCategorySlice";
 import { setAddon } from "./addonSlice";
 import { setMenuCategoryMenu } from "./menuCategoryMenuSlice";
+import { setMenuAddonCategories } from "./menuAddonCategorySlice";
 
 const initialState: AppSlice = {
   init: false,
@@ -30,6 +31,7 @@ export const fetchAppData = createAsyncThunk(
         menuCategories,
         menus,
         menuCategoryMenus,
+        menuAddonCategories,
         addonCategories,
         addon,
       } = appData;
@@ -39,6 +41,7 @@ export const fetchAppData = createAsyncThunk(
       thunkApi.dispatch(setMenuCategories(menuCategories));
       thunkApi.dispatch(setMenus(menus));
       thunkApi.dispatch(setMenuCategoryMenu(menuCategoryMenus));
+      thunkApi.dispatch(setMenuAddonCategories(menuAddonCategories));
       thunkApi.dispatch(setAddonCategory(addonCategories));
       thunkApi.dispatch(setAddon(addon));
       onSuccess && onSuccess();
@@ -60,3 +63,5 @@ const appSlice = createSlice({
 
 export const { setInit } = appSlice.actions;
 export default appSlice.reducer;
+
+

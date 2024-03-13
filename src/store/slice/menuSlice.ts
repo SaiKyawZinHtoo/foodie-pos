@@ -24,9 +24,7 @@ export const getMenu = createAsyncThunk(
   async (options: GetMenuOptions, ThunkApi) => {
     const { locationId, onSuccess, onError } = options;
     try {
-      const response = await fetch(
-        `${config.apiBaseUrl}/menu?locationId=${locationId}`
-      );
+      const response = await fetch(`/menu?locationId=${locationId}`);
       const menus = await response.json();
       ThunkApi.dispatch(setMenus(menus));
       onSuccess && onSuccess();

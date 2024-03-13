@@ -16,7 +16,7 @@ export const createMenuCategory = createAsyncThunk(
   async (Option: CreateMenuCategoryOptions, thunkApi) => {
     const { locationId, name, onSuccess, onError } = Option;
     try {
-      const response = await fetch(`${config.apiBaseUrl}/menu-category`, {
+      const response = await fetch(`${config.apiBaseUrl}/menu-categories`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ name, locationId }),

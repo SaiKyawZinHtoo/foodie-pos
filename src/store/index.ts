@@ -5,6 +5,7 @@ import locationReducer from "./slice/locationSlice";
 import tableReducer from "./slice/tableSlice";
 import menuCategoriesReducer from "./slice/menuCategorySlice";
 import addonCategoriesReducer from "./slice/addonCategorySlice";
+import menuAddonCategoryReducer from "./slice/menuAddonCategorySlice";
 import addonReducer from "./slice/addonSlice";
 import menuCategoryMenuReducer from "./slice/menuCategoryMenuSlice";
 
@@ -17,6 +18,7 @@ export const store = configureStore({
     menuCategoryMenu: menuCategoryMenuReducer,
     menuCategory: menuCategoriesReducer,
     addonCategory: addonCategoriesReducer,
+    menuAddonCategory: menuAddonCategoryReducer,
     addon: addonReducer,
   },
 });

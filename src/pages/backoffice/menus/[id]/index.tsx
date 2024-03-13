@@ -1,7 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { deleteMenu, updateMenu } from "@/store/slice/menuSlice";
 import { UpdateMenuOptions } from "@/types/menu";
-import { CheckBox } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -32,10 +31,12 @@ const UpdateMenuPage = () => {
   const menuCategoryMenus = useAppSelector(
     (state) => state.menuCategoryMenu.item
   );
-  const menuCategoryMenu = menuCategoryMenus.filter(
+  const currentMenuCategoryMenu = menuCategoryMenus.filter(
     (item) => item.menuId === menuId
   );
-  const menuCategoryIds = menuCategoryMenu.map((item) => item.menuCategoryId);
+  const menuCategoryIds = currentMenuCategoryMenu.map(
+    (item) => item.menuCategoryId
+  );
 
   const [data, setData] = useState<UpdateMenuOptions>();
   const [open, setOpen] = useState(false);
