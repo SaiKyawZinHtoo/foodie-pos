@@ -20,11 +20,11 @@ export const menuAddonCategorySlice = createSlice({
       state.item = [...state.item, action.payload];
     },
     replaceMenuAddonCategory: (state, action) => {
-      // const menuId = action.payload[0].menuId; // အဲ့တစ်ကြောင်းကိုသိပ်မရှင်းဘူး
-      // const otherMenuCategoryMenu = state.item.filter(
-      //   (item) => item.id !== menuId
-      // );
-      // state.item = [...otherMenuCategoryMenu, action.payload];
+      const addonCategoryId = action.payload[0].addonCategoryId; // အဲ့တစ်ကြောင်းကိုသိပ်မရှင်းဘူး
+      const otherMenuAddonCategory = state.item.filter(
+        (item) => item.addonCategoryId !== addonCategoryId
+      );
+      state.item = [...otherMenuAddonCategory, action.payload];
     },
   },
 });

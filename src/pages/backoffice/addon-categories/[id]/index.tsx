@@ -3,6 +3,7 @@ import {
   deleteAddonCategory,
   updateAddonCategory,
 } from "@/store/slice/addonCategorySlice";
+import { setOpenSnackbar } from "@/store/slice/snackbarSlice";
 import { UpdateAddonCategoryOptions } from "@/types/addonCategory";
 import {
   Box,
@@ -24,7 +25,7 @@ import {
 } from "@mui/material";
 import { Menu } from "@prisma/client";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const AddonCategoryDetail = () => {
   const router = useRouter();
@@ -40,37 +41,48 @@ const AddonCategoryDetail = () => {
   const currentMenuAddonCategories = menuAddonCategories.filter(
     (item) => item.addonCategoryId === addonCategoryId
   );
-  const menuId = currentMenuAddonCategories.map((item) => item.menuId);
+  const menuIds = currentMenuAddonCategories.map((item) => item.menuId);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<UpdateAddonCategoryOptions>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (addonCategory) {
-      setData({ ...addonCategory, menuId });
+      setData({ ...addonCategory, menuIds });
     }
   }, [addonCategory]);
 
   if (!addonCategory || !data) return null;
 
   const handleUpdateAddonCategory = () => {
-    const isValid = data.name && data.menuId.length > 0;
+    const isValid = data.name && data.menuIds.length > 0;
     if (!isValid) return null;
-    dispatch(updateAddonCategory(data));
+    dispatch(
+      updateAddonCategory({
+        ...data,
+        onSuccess: () =>
+          dispatch(setOpenSnackbar({ message: "Updated Menu Success.." })),
+      })
+    );
   };
 
   const handleDeleteAddonCategory = () => {
     dispatch(
       deleteAddonCategory({
         id: addonCategoryId,
-        onSuccess: () => router.push("/backoffice/addon-categories"),
+        onSuccess: () => {
+          dispatch(
+            setOpenSnackbar({ message: "Delete Addon Category Successfuly..." })
+          );
+          router.push("/backoffice/addon-categories");
+        },
       })
     );
   };
 
   const handleOnChange = (evt: SelectChangeEvent<number[]>) => {
     const selectedId = evt.target.value as number[];
-    setData({ ...data, id: addonCategoryId, menuId: selectedId });
+    setData({ ...data, id: addonCategoryId, menuIds: selectedId });
   };
 
   return (
@@ -89,20 +101,16 @@ const AddonCategoryDetail = () => {
         <Select
           multiple
           label="Menu"
-          value={data.menuId}
+          value={data.menuIds}
           onChange={handleOnChange}
-          //ဒီအပိုင်းမှာကို error တက်နေလို့ လိုက်ပြင်နေရင်းနဲ့စမ်းလိုက်နဲ့ 
           renderValue={(selectedMenuIds) => {
-            const renderName = selectedMenuIds
+            return selectedMenuIds
               .map((selectedMenuId) => {
-                const menu = menus.find(
-                  (item) => item.id === selectedMenuId
-                ) as Menu;
-                if (!menu) return null;
-                return menu.name;
+                return menus.find((item) => item.id === selectedMenuId) as Menu;
               })
-              .join(", ");
-            return renderName;
+              .map((item) => (
+                <Chip key={item.id} label={item.name} sx={{ mr: 2 }} />
+              ));
           }}
           MenuProps={{
             PaperProps: {
@@ -114,9 +122,9 @@ const AddonCategoryDetail = () => {
           }}
         >
           {menus.map((item) => (
-            <MenuItem>
+            <MenuItem key={item.id} value={item.id}>
               <Checkbox
-                checked={data.menuId.includes(item.id)}
+                checked={data.menuIds.includes(item.id)}
                 onChange={(evt, value) =>
                   setData({ ...data, isRequired: value })
                 }
@@ -128,6 +136,7 @@ const AddonCategoryDetail = () => {
       </FormControl>
       <FormControlLabel
         control={<Checkbox defaultChecked={addonCategory.isRequired} />}
+        //onChange={(evt, value) => setData({ ...data, isRequired: value })}
         label="Required"
       />
       <Button

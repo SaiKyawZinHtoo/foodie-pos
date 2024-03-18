@@ -1,13 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import menuReducer from "./slice/menuSlice";
+import addonCategoriesReducer from "./slice/addonCategorySlice";
+import addonReducer from "./slice/addonSlice";
 import appReducer from "./slice/appSlice";
 import locationReducer from "./slice/locationSlice";
-import tableReducer from "./slice/tableSlice";
-import menuCategoriesReducer from "./slice/menuCategorySlice";
-import addonCategoriesReducer from "./slice/addonCategorySlice";
 import menuAddonCategoryReducer from "./slice/menuAddonCategorySlice";
-import addonReducer from "./slice/addonSlice";
 import menuCategoryMenuReducer from "./slice/menuCategoryMenuSlice";
+import menuCategoriesReducer from "./slice/menuCategorySlice";
+import menuReducer from "./slice/menuSlice";
+import snackbarReducer from "./slice/snackbarSlice";
+import tableReducer from "./slice/tableSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     addonCategory: addonCategoriesReducer,
     menuAddonCategory: menuAddonCategoryReducer,
     addon: addonReducer,
+    snackbar: snackbarReducer,
   },
 });
 

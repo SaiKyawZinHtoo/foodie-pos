@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createAddonCategory } from "@/store/slice/addonCategorySlice";
+import { setOpenSnackbar } from "@/store/slice/snackbarSlice";
 import { CreateAddonCategoryOptions } from "@/types/addonCategory";
 import {
   Box,
@@ -47,17 +48,37 @@ const NewAddonCategory = ({ open, setOpen }: Props) => {
   const handleCreateAddonCategory = () => {
     const isValid =
       newAddonCategory.name && newAddonCategory.menuIds.length > 0;
-    if (!isValid) return null;
+    if (!isValid) {
+      return dispatch(
+        setOpenSnackbar({
+          message: "Missing Required Fields",
+          severity: "error",
+        })
+      );
+    }
     dispatch(
       createAddonCategory({
         ...newAddonCategory,
-        onSuccess: () => setOpen(false),
+        onSuccess: () => {
+          setOpen(false);
+          dispatch(
+            setOpenSnackbar({
+              message: "New Addon Category Created Successfully...",
+            })
+          );
+        },
       })
     );
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setOpen(false);
+        setNewAddonCategory(newAddonCategory);
+      }}
+    >
       <DialogTitle>Create New Addon Category</DialogTitle>
       <DialogContent>
         <TextField

@@ -60,7 +60,7 @@ export const updateMenu = createAsyncThunk(
     const { id, name, price, menuCategoryIds, onSuccess, onError } = options;
     try {
       const response = await fetch(`${config.apiBaseUrl}/menus`, {
-        method: "POST",
+        method: "PUT",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ id, name, price, menuCategoryIds }),
       });

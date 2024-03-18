@@ -6,7 +6,10 @@ import {
 } from "@/types/addonCategory";
 import { config } from "@/utils/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addMenuAddonCategories, replaceMenuAddonCategory } from "./menuAddonCategorySlice";
+import {
+  addMenuAddonCategories,
+  replaceMenuAddonCategory,
+} from "./menuAddonCategorySlice";
 
 const initialState: AddonCategorySlice = {
   item: [],
@@ -37,17 +40,17 @@ export const createAddonCategory = createAsyncThunk(
 export const updateAddonCategory = createAsyncThunk(
   "addonCategory/updateAddonCategory",
   async (options: UpdateAddonCategoryOptions, thunkApi) => {
-    const { id, name, isRequired, menuId, onSuccess, onError } = options;
+    const { id, name, isRequired, menuIds, onSuccess, onError } = options;
     try {
       const response = await fetch(`${config.apiBaseUrl}/addon-categories`, {
-        method: "POST",
-        headers: {"content-type": "application/json"},
-        body: JSON.stringify({id, name, isRequired, menuId})
-      })
-      const {addonCategory, menuAddonCategories} = await response.json()
-      thunkApi.dispatch(replaceAddonCategory(addonCategory))
-      thunkApi.dispatch(replaceMenuAddonCategory(menuAddonCategories))
-      onSuccess && onSuccess()
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id, name, isRequired, menuIds }),
+      });
+      const { addonCategory, menuAddonCategories } = await response.json();
+      thunkApi.dispatch(replaceAddonCategory(addonCategory));
+      thunkApi.dispatch(replaceMenuAddonCategory(menuAddonCategories));
+      onSuccess && onSuccess();
     } catch (err) {
       onError && onError();
     }

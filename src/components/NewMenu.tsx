@@ -12,13 +12,11 @@ import {
   InputLabel,
   ListItemText,
   MenuItem,
-  PaperProps,
   Select,
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
 import { MenuCategory } from "@prisma/client";
-import { log } from "console";
 import React, { useState } from "react";
 
 interface Props {
@@ -33,7 +31,7 @@ const NewMenu = ({ open, setOpen }: Props) => {
     menuCategoryIds: [],
   });
   const menuCategories = useAppSelector((state) => state.menuCategory.item);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const handleOnChange = (evt: SelectChangeEvent<number[]>) => {
     const selectedIds = evt.target.value as number[];
@@ -41,11 +39,17 @@ const NewMenu = ({ open, setOpen }: Props) => {
   };
 
   const handleNewMenu = () => {
-    dispatch(createMenu({...newMenu, onSuccess: () => setOpen(false)}))
+    dispatch(createMenu({ ...newMenu, onSuccess: () => setOpen(false) }));
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setOpen(false);
+        setNewMenu(newMenu);
+      }}
+    >
       <DialogTitle>Create New Menu</DialogTitle>
       <DialogContent>
         <Box sx={{ display: "flex", flexDirection: "column" }}>

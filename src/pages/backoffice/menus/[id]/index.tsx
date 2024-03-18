@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,7 +19,7 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import { MenuCategory } from "@prisma/client";
+import { Menu, MenuCategory } from "@prisma/client";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -103,16 +104,15 @@ const UpdateMenuPage = () => {
           label="Menu Category"
           onChange={handleOnChange}
           renderValue={(selectedMenuCategoryIds) => {
-            const name = selectedMenuCategoryIds
+            return selectedMenuCategoryIds
               .map((selectedMenuCategoryId) => {
-                const menuCategory = menuCategories.find(
+                return menus.find(
                   (item) => item.id === selectedMenuCategoryId
-                ) as MenuCategory;
-                return menuCategory;
+                ) as Menu;
               })
-              .map((item) => item.name)
-              .join(", ");
-            return name;
+              .map((item) => (
+                <Chip key={item.id} label={item.name} sx={{ mr: 2 }} />
+              ));
           }}
           MenuProps={{
             PaperProps: {
@@ -153,3 +153,5 @@ const UpdateMenuPage = () => {
 };
 
 export default UpdateMenuPage;
+
+

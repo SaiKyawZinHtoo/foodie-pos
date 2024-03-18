@@ -17,7 +17,7 @@ export interface UpdateAddonCategoryOptions extends BaseOptions {
   id: number;
   name: string;
   isRequired: boolean;
-  menuId: number[];
+  menuIds: number[];
 }
 
 export interface DeleteAddonCategoryOptions extends BaseOptions {
