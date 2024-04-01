@@ -8,6 +8,10 @@ export interface LocationSlice {
 }
 
 export interface CreateNewLocationOptions extends BaseOptions {
-  name: string
-  address: string
+  name: string;
+  address: string;
+}
+
+export interface DeleteLocationOptions extends BaseOptions {
+  id: number;
 }

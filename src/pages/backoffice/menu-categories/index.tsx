@@ -1,7 +1,9 @@
+import ItemCard from "@/components/ItemCard";
 import NewMenuCategory from "@/components/NewMenuCategory";
 import { useAppSelector } from "@/store/hooks";
-import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import CategoryIcon from "@mui/icons-material/Category";
+import { Box, Button } from "@mui/material";
+import { useState } from "react";
 
 const MenuCategory = () => {
   const [open, setOpen] = useState(false);
@@ -13,9 +15,14 @@ const MenuCategory = () => {
           New Menu Category
         </Button>
       </Box>
-      <Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
         {menuCategories.map((item) => (
-          <Typography key={item.id}>{item.name}</Typography>
+          <ItemCard
+            key={item.id}
+            title={item.name}
+            icon={<CategoryIcon />}
+            href={`/backoffice/menu-categories/${item.id}`}
+          />
         ))}
       </Box>
       <NewMenuCategory open={open} setOpen={setOpen} />

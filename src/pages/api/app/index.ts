@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import nextAuth, { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]";
 import { prisma } from "@/utils/db";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(
   req: NextApiRequest,
@@ -90,15 +90,15 @@ export default async function handler(
     } else {
       const companyId = dbUser.companyId;
       const locations = await prisma.location.findMany({
-        where: { companyId },
+        where: { companyId, isArchived: false },
       });
       const lodcationIds = locations.map((item) => item.id);
       const menuCategories = await prisma.menuCategory.findMany({
-        where: { companyId },
+        where: { companyId, isArchived: false },
       });
       const menuCategoryIds = menuCategories.map((item) => item.id);
       const menuCategoryMenus = await prisma.menuCategoryMenu.findMany({
-        where: { menuCategoryId: { in: menuCategoryIds } },
+        where: { menuCategoryId: { in: menuCategoryIds }, isArchived: false },
       });
 
       const menuIds = menuCategoryMenus.map((item) => item.menuId);
@@ -107,7 +107,7 @@ export default async function handler(
       });
 
       const menuAddonCategories = await prisma.menuAddonCategory.findMany({
-        where: { menuId: { in: menuIds } },
+        where: { menuId: { in: menuIds }, isArchived: false },
       });
       const addonCategoryIds = menuAddonCategories.map(
         (item) => item.addonCategoryId
@@ -116,10 +116,10 @@ export default async function handler(
         where: { id: { in: addonCategoryIds }, isArchived: false },
       });
       const addon = await prisma.addon.findMany({
-        where: { addonCategoryId: { in: addonCategoryIds } },
+        where: { addonCategoryId: { in: addonCategoryIds }, isArchived: false },
       });
       const table = await prisma.table.findMany({
-        where: { locationId: { in: lodcationIds } },
+        where: { locationId: { in: lodcationIds }, isArchived: false },
       });
       return res.status(200).json({
         locations,

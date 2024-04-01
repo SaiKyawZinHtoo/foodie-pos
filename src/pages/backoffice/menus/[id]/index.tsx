@@ -1,4 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { removeAddonCategory } from "@/store/slice/addonCategorySlice";
+import { removeMenuAddonCategoryById } from "@/store/slice/menuAddonCategorySlice";
 import { deleteMenu, updateMenu } from "@/store/slice/menuSlice";
 import { UpdateMenuOptions } from "@/types/menu";
 import {
@@ -12,22 +14,24 @@ import {
   DialogTitle,
   FormControl,
   InputLabel,
-  ListItem,
   ListItemText,
   MenuItem,
   Select,
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import { Menu, MenuCategory } from "@prisma/client";
+import { MenuCategory } from "@prisma/client";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const UpdateMenuPage = () => {
   const router = useRouter();
   const menuId = Number(router.query.id);
   const menus = useAppSelector((state) => state.menu.items);
   const menuCategories = useAppSelector((state) => state.menuCategory.item);
+  const menuAddonCategories = useAppSelector(
+    (state) => state.menuAddonCategory.item
+  );
   const menu = menus.find((item) => item.id === menuId);
   const menuCategoryMenus = useAppSelector(
     (state) => state.menuCategoryMenu.item
@@ -70,7 +74,23 @@ const UpdateMenuPage = () => {
     dispatch(
       deleteMenu({
         id: menuId,
-        onSuccess: () => router.push("/backoffice/menus"),
+        onSuccess: () => {
+          const addonCategoryIds = menuAddonCategories
+            .filter((item) => item.menuId === menuId)
+            .map((item) => item.addonCategoryId);
+          addonCategoryIds.forEach((addonCategoryId) => {
+            const entries = menuAddonCategories.filter(
+              (item) => item.addonCategoryId === addonCategoryId
+            );
+            if (entries.length === 1) {
+              const menuAddonCategoryId = entries[0].id;
+              dispatch(removeAddonCategory({ id: addonCategoryId }));
+              dispatch(
+                removeMenuAddonCategoryById({ id: menuAddonCategoryId })
+              );
+            }
+          });
+        },
       })
     );
   };
@@ -106,9 +126,9 @@ const UpdateMenuPage = () => {
           renderValue={(selectedMenuCategoryIds) => {
             return selectedMenuCategoryIds
               .map((selectedMenuCategoryId) => {
-                return menus.find(
+                return menuCategories.find(
                   (item) => item.id === selectedMenuCategoryId
-                ) as Menu;
+                ) as MenuCategory;
               })
               .map((item) => (
                 <Chip key={item.id} label={item.name} sx={{ mr: 2 }} />
@@ -153,5 +173,3 @@ const UpdateMenuPage = () => {
 };
 
 export default UpdateMenuPage;
-
-

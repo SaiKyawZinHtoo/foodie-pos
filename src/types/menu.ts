@@ -19,7 +19,7 @@ export interface CreateMenuOptions extends BaseOptions {
 
 export interface UpdateMenuOptions extends BaseOptions {
   id: number;
-  name: string;
+  name: string ;
   price: number;
   menuCategoryIds: number[];
 }

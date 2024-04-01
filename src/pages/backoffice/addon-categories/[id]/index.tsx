@@ -108,6 +108,7 @@ const AddonCategoryDetail = () => {
               .map((selectedMenuId) => {
                 return menus.find((item) => item.id === selectedMenuId) as Menu;
               })
+              /*.filter((item) => item !== undefined)‌ဖြေရှင်းနည်းနောက်တစ်မျိုး*/
               .map((item) => (
                 <Chip key={item.id} label={item.name} sx={{ mr: 2 }} />
               ));

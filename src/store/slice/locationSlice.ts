@@ -1,7 +1,6 @@
 import { CreateNewLocationOptions, LocationSlice } from "@/types/location";
 import { config } from "@/utils/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 const initialState: LocationSlice = {
   item: [],

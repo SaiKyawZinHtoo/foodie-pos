@@ -7,11 +7,11 @@ import {
 } from "@/types/menu";
 import { config } from "@/utils/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { removeMenuAddonCategoryByMenuId } from "./menuAddonCategorySlice";
 import {
   addMenuCategoryMenu,
   replaceMenuCategoryMenu,
 } from "./menuCategoryMenuSlice";
-import { actionAsyncStorage } from "next/dist/client/components/action-async-storage.external";
 
 const initialState: MenuSlice = {
   items: [],
@@ -83,6 +83,7 @@ export const deleteMenu = createAsyncThunk(
         method: "DELETE",
       });
       ThunkApi.dispatch(removeMenu({ id }));
+      ThunkApi.dispatch(removeMenuAddonCategoryByMenuId({ menuId: id }));
       onSuccess && onSuccess();
     } catch (err) {
       onError && onError();

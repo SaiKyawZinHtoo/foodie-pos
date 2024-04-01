@@ -1,9 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { prisma } from "@/utils/db";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
-import { prisma } from "@/utils/db";
-import NewMenuCategory from "@/components/NewMenuCategory";
 
 export default async function handler(
   req: NextApiRequest,
@@ -58,6 +57,10 @@ export default async function handler(
     const menuId = Number(req.query.id);
     const menu = await prisma.menu.findFirst({ where: { id: menuId } });
     if (!menu) return res.status(400).send("Bad Requested.. ");
+    await prisma.menuAddonCategory.updateMany({
+      data: { isArchived: true },
+      where: { menuId },
+    });
     await prisma.menu.update({
       data: { isArchived: true },
       where: { id: menuId },
